@@ -8,9 +8,8 @@ js = open(os.path.join(ROOT, 'app.js')).read()
 head_end = h.index('</head><body>')
 head = h[:head_end]
 title = re.search(r'<title>.*?</title>', head).group(0)
-keep = '\n'.join(re.findall(r'<meta name="(?:description|theme-color)"[^>]*>|<script>try.*?</script>|<link rel="preconnect"[^>]*>|<link href="https://fonts[^>]*>', head))
+keep = '\n'.join(re.findall(r'<meta name="(?:description|theme-color)"[^>]*>|<link rel="preconnect"[^>]*>|<link href="https://fonts[^>]*>', head))
 body = h[head_end + len('</head><body>'):h.rindex('</body>')]
 body = body.replace('<script src="app.js"></script>', '<script>\n' + js + '\n</script>')
-out = title + '\n' + keep + '\n<style>\n' + css + '\n</style>\n' + body
-open(sys.argv[1], 'w').write(out)
-print('wrote', len(out))
+open(sys.argv[1], 'w').write(title + '\n' + keep + '\n<style>\n' + css + '\n</style>\n' + body)
+print('wrote', sys.argv[1])
