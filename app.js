@@ -94,29 +94,35 @@ $('#gameContent').addEventListener('click',e=>{const option=e.target.closest('[d
 $('#resetGame').addEventListener('click',()=>{round=0;gameChoices=[];renderGame();});
 renderGame();
 
-// Opening: "Hi DaMENSCH, I’m Ishani."
+// Opening: "Hi DaMENSCH," then "I’m DaMENSCH" becomes "I’m DaISHANI."
 (function(){
  const screen=$('#introScreen');if(!screen)return;
  document.body.classList.add('intro-open');
  const hi=$('#typeHi'),me=$('#typeMe'),cH=$('#caretHi'),cM=$('#caretMe'),role=$('#introRole'),go=$('#introGo');
  let done=false,timers=[];
  const later=(fn,ms)=>timers.push(setTimeout(fn,ms));
+ const FINAL='I’m Da<b>ISHANI.</b>';
  function finish(){
   if(done)return;done=true;timers.forEach(clearTimeout);
-  screen.classList.add('leaving');document.body.classList.remove('intro-open');
+  hi.textContent='Hi DaMENSCH,';me.innerHTML=FINAL;
+  screen.classList.add('leaving');document.body.classList.remove('intro-open');document.body.classList.add('hero-in');
   setTimeout(()=>screen.classList.add('gone'),650);
  }
- function type(el,text,speed,cb){let i=0;(function step(){el.innerHTML=text.slice(0,i);if(i++<text.length)later(step,speed);else cb&&cb();})();}
- const fast=reduceMotion.matches;
- if(fast){hi.textContent='Hi DaMENSCH,';me.innerHTML='I’m <b>Ishani.</b>';role.classList.add('show');go.classList.add('show');later(finish,1200);}
+ function type(el,pre,text,speed,cb){let i=0;(function step(){el.innerHTML=pre+text.slice(0,i);if(i++<text.length)later(step,speed);else cb&&cb();})();}
+ function erase(el,pre,text,speed,cb){let i=text.length;(function step(){el.innerHTML=pre+'<s>'+text.slice(0,i)+'</s>';if(i-->0)later(step,speed);else cb&&cb();})();}
+ if(reduceMotion.matches){hi.textContent='Hi DaMENSCH,';me.innerHTML=FINAL;role.classList.add('show');go.classList.add('show');later(finish,1600);}
  else{
   cH.classList.add('on');
-  later(()=>type(hi,'Hi DaMENSCH,',75,()=>{cH.classList.remove('on');cM.classList.add('on');
-   later(()=>type(me,'I’m <b>Ishani.</b>'.replace('<b>Ishani.</b>','Ishani.'),80,()=>{
-    me.innerHTML='I’m <b>Ishani.</b>';cM.classList.remove('on');
-    later(()=>role.classList.add('show'),250);later(()=>go.classList.add('show'),600);later(finish,3200);
+  later(()=>type(hi,'','Hi DaMENSCH,',70,()=>{cH.classList.remove('on');cM.classList.add('on');
+   later(()=>type(me,'','I’m DaMENSCH',70,()=>{
+    later(()=>erase(me,'I’m Da','MENSCH',60,()=>{
+     later(()=>type(me,'I’m Da<b>','ISHANI.',85,()=>{
+      me.innerHTML=FINAL;cM.classList.remove('on');
+      later(()=>role.classList.add('show'),250);later(()=>go.classList.add('show'),600);later(finish,3400);
+     }),200);
+    }),450);
    }),250);
-  }),500);
+  }),400);
  }
  go.addEventListener('click',finish);$('#introSkip').addEventListener('click',finish);
  addEventListener('keydown',e=>{if(e.key==='Escape'||e.key==='Enter')finish();});
