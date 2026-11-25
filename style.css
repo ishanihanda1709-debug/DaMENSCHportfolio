@@ -62,7 +62,7 @@ h1,h2,h3,h4{margin:0;line-height:1.08;letter-spacing:-.01em}
 .mq-track{display:flex;gap:22px;padding:8px 0;width:max-content;animation:mq 40s linear infinite}
 .mq-track i{font-style:normal;color:var(--accent)}
 @keyframes mq{to{transform:translateX(-33.333%)}}
-.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .top-in{max-width:var(--max);margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:20px}
 .desk-nav{display:flex;gap:22px}
 .desk-nav a{text-decoration:none;font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
